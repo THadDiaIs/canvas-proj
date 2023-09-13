@@ -1,0 +1,17 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			var worker = new Worker('worker.js');
+			worker.onmessage = function(event){
+				alert("Del worker, he recibido el siguiente mensaje:"+event.data);
+			}
+			var numero = new Array;
+			numero[0] = 4;
+			numero[1] = 6;
+			numero[2] = 9;
+			worker.postMessage(numero);
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

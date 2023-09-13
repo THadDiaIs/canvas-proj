@@ -1,0 +1,252 @@
+<html>
+	<head>
+		<script tyle="text/javascript" src="jquery.js">
+		</script>
+		<script tyle="text/javascript">
+			$(document).ready(inicio);
+			function inicio(){
+				setTimeout("dibujar()",500);
+				setTimeout("dibujar()",1000);
+				$("#archivo").change(archivo);
+				$("#efectos").change(efectos);
+			}
+			function archivo(){
+				if($("#archivo").attr("value") == "nuevo"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					contexto.clearRect(0,0,300,300);
+				}
+				if($("#archivo").attr("value") == "abrir"){
+					$("body").append("<form method='POST' action='upload.php' enctype='multipart/form-data'><input type='file' name='archivo'><input type='submit'></form>'");
+				}
+				if($("#archivo").attr("value") == "guardar"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					window.location = canvas.toDataURL("image/png")
+				}
+			}
+
+			function efectos(){
+				if($("#efectos").attr("value") == "negativo"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					var imageData = contexto.getImageData(0,0,500,500);
+					var data = imageData.data;
+					for(var i=0;i<data.length;i+=4){
+						data[i] = 255 - data[i];
+						data[i+1] = 255 - data[i+1];
+						data[i+2] = 255 - data[i+2];
+					}
+					contexto.putImageData(imageData,0,0)
+				}
+				if($("#efectos").attr("value") == "aclarar"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					var imageData = contexto.getImageData(0,0,500,500);
+					var data = imageData.data;
+					for(var i=0;i<data.length;i+=4){
+						data[i] = data[i] + 100;
+						data[i+1] = data[i+1] + 100;
+						data[i+2] = data[i+2] + 100;
+					}
+					contexto.putImageData(imageData,0,0)
+				}
+				if($("#efectos").attr("value") == "oscurecer"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					var imageData = contexto.getImageData(0,0,500,500);
+					var data = imageData.data;
+					for(var i=0;i<data.length;i+=4){
+						data[i] = data[i] - 100;
+						data[i+1] = data[i+1] - 100;
+						data[i+2] = data[i+2] - 100;
+					}
+					contexto.putImageData(imageData,0,0)
+				}
+				if($("#efectos").attr("value") == "escalagrises"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					var imageData = contexto.getImageData(0,0,500,500);
+					var data = imageData.data;
+					for(var i=0;i<data.length;i+=4){
+						data[i] = (data[i] + data[i+1] + data[i+2])/3;
+						data[i+1] = (data[i] + data[i+1] + data[i+2])/3;
+						data[i+2] = (data[i] + data[i+1] + data[i+2])/3;
+					}
+					contexto.putImageData(imageData,0,0)
+				}
+				if($("#efectos").attr("value") == "solarizar"){
+					var canvas = document.getElementById("lienzo");
+					var contexto = canvas.getContext("2d");
+					var imageData = contexto.getImageData(0,0,500,500);
+					var data = imageData.data;
+					for(var i=0;i<data.length;i+=4){
+						if(data[i] < 122){data[i] = 0}else{data[i] = 255}
+						if(data[i+1] < 122){data[i+1] = 0}else{data[i+1] = 255}
+						if(data[i+2] < 122){data[i+2] = 0}else{data[i+2] = 255}
+					
+					}
+					contexto.putImageData(imageData,0,0)
+				}
+			}
+			
+			
+			function dibujar(){
+				var canvas = document.getElementById("lienzo");
+				var contexto = canvas.getContext("2d");
+
+				var img = new Image();
+				img.src = "imagenes/inicial.jpg"
+				contexto.drawImage(img,20,20);
+
+				var imageData = contexto.getImageData(0,0,500,500);
+				var data = imageData.data;
+
+				
+				
+				contexto.putImageData(imageData,0,0)
+				
+			}
+			
+		</script>
+		<style type="text/css">
+			canvas{
+				border:0px solid black;
+				float:left;
+				background:white;
+				box-shadow:0px 0px 25px rgba(0,0,0,0.5) inset;
+			}
+			#herramientas{
+				width:50px;
+				height:300px;
+				border:0px solid black;
+				float:left;
+				background:grey;
+				background: #ebf1f6; /* Old browsers */
+				background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-9 */
+			}
+			#dialogos{
+				width:200px;
+				height:300px;
+				border:0px solid black;
+				float:left;
+				background:grey;
+				background: #ebf1f6; /* Old browsers */
+				background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-9 */
+			}
+			nav{
+				width:544px;
+				height:18px;
+				background:grey;
+				padding:3px 3px 3px 3px;
+				margin-bottom:2px;
+				background: #ebf1f6; /* Old browsers */
+				background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-9 */
+			}
+			select{
+				background:grey;
+				color:white;
+				padding:0px;
+				margin:0px;
+				border:0px solid white;
+			}
+			#contenedor{
+				margin:auto;
+				width:550px;
+			}
+			body{
+				background:white;
+				font-family:arial;
+				background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+
+			}
+			footer{
+				background:grey;
+				margin-top:6px;
+				padding:3px;
+				color:white;
+				font-size:8px;
+				background: #ebf1f6; /* Old browsers */
+				background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-9 */
+			}
+			.herramienta{
+				width:45px;
+				height:45px;
+				border:0px solid black;
+				margin-bottom:3px;
+				margin-left:2px;
+				box-shadow:0px 0px 10px rgba(0,0,0,0.5);
+				border-radius:5px;
+				background: #ebf1f6; /* Old browsers */
+				background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-9 */
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div id="contenedor">
+			<nav>
+				<select id="archivo">
+					<option value="">Archivo</option>
+					<option value="nuevo">Nuevo</option>
+					<option value="abrir">Abrir</option>
+					<option value="guardar">Guardar</option>
+					<option value="cerrar">Cerrar</option>
+				</select>
+				<select id="efectos">
+					<option value="">Efectos</option>
+					<option value="negativo">Negativo</option>
+					<option value="aclarar">Aclarar</option>
+					<option value="oscurecer">Oscurecer</option>
+					<option value="escalagrises">Escala de Grises</option>
+					<option value="solarizar">solarizar</option>
+				</select>
+			</nav>
+			<div id="herramientas">
+				<div class="herramienta"></div>
+				<div class="herramienta"></div>
+				<div class="herramienta"></div>
+				<div class="herramienta"></div>
+			</div>
+			<canvas id="lienzo" width=300px height=300px></canvas>
+			<div id="dialogos"></div>
+			<footer>Retocador de imágenes - (c) 2013 Jose Vicente Carratala</footer>
+		</div>
+	</body>
+</html>
